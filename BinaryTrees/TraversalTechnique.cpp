@@ -1,5 +1,6 @@
 #include <iostream>
 #include <vector>
+#include <queue>
 using namespace std;
 
 struct TreeNode
@@ -13,7 +14,7 @@ class TreeOperations
 {
 private:
     vector<int> result;
-
+    vector<vector<int>> lot;
     // Recursive Helpers
     void recusiveinorderHelper(TreeNode *root)
     {
@@ -40,6 +41,31 @@ private:
         recursivepostorderHelper(root->left);
         recursivepostorderHelper(root->right);
         result.push_back(root->data);
+    }
+
+    void recursiveLevelOrderTraversal(TreeNode *root)
+    {
+        lot.clear();
+        if (root == NULL)
+            return;
+        queue<TreeNode *> q;
+        q.push(root);
+        while (!q.empty())
+        {
+            int size = q.size();
+            vector<int> level;
+            for (int i = 0; i < size; ++i)
+            {
+                TreeNode *node = q.front();
+                q.pop();
+                if (node->left != NULL)
+                    q.push(node->left);
+                if (node->right != NULL)
+                    q.push(node->right);
+                level.push_back(node->data);
+            }
+            lot.push_back(level);
+        }
     }
 
 public:
@@ -76,6 +102,18 @@ public:
     {
         return result;
     }
+
+    void levelorder(TreeNode *root)
+    {
+        result.clear();
+        recursiveLevelOrderTraversal(root);
+    }
+
+    // get vector
+    vector<vector<int>> getLevelResult()
+    {
+        return lot;
+    }
 };
 
 int main()
@@ -87,12 +125,20 @@ int main()
     root->left->left = tree.createNode(4);
     root->left->right = tree.createNode(5);
 
-    tree.inorder(root);
     vector<int> res = tree.getResult();
+    vector<vector<int>> ans = tree.getLevelResult();
     // Print Nodes->>>
     for (int el : res)
     {
         cout << el << " ";
+    }
+
+    for (int i = 0; i < ans.size(); ++i)
+    {
+        for (int j = 0; j < ans[i].size(); ++j)
+        {
+            cout << ans[i][j] << " ";
+        }
     }
 
     return 0;
