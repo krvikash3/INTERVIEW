@@ -27,7 +27,18 @@ int main()
     cout << a << endl;
 
     ptr = ptr + 1;
-    cout << ptr;
+    cout << ptr << endl;
+    cout << "New concept" << endl;
+
+    int val = 11;
+    int *p = &val;
+    int **q = &p; // Double pointer->
+    cout << val << endl;
+    cout << *p << endl;
+    cout << &val << endl;
+    cout << &p << endl;
+    cout << *q << endl;
+    cout << **q << endl;
 
     return 0;
 }
